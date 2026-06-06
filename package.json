@@ -1,0 +1,32 @@
+{
+  "name": "ai_assigment_qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright E2E tests for the Kanban Board demo application.",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "qa",
+    "kanban"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
+    "eslint": "^10.4.1",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.1"
+  }
+}
