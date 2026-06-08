@@ -21,9 +21,32 @@ npx playwright install
 
 ## Run Tests
 
+Run all tests:
+
 ```bash
 npm test
 ```
+
+Run only positive paths:
+
+```bash
+npm run test:positive
+```
+
+Run known defect checks:
+
+```bash
+npm run test:negative
+```
+
+Run performance checks:
+
+```bash
+npm run test:performance
+```
+
+Negative and performance tests document known defects from `docs/BUG_REPORT.md`. They are expected to fail while the
+demo application does not match the requirements. Use `npm run test:positive` for a green smoke run.
 
 Run against a different environment:
 

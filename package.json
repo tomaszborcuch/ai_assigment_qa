@@ -6,6 +6,9 @@
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
+    "test:positive": "playwright test tests/positive",
+    "test:negative": "playwright test tests/negative",
+    "test:performance": "playwright test tests/performance",
     "test:report": "playwright show-report",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
