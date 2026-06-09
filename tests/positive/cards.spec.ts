@@ -55,6 +55,15 @@ test.describe('Card positive paths', () => {
     await boardPage.expectCardHidden('Unsaved title');
   });
 
+  test('does not create a card without a title', async ({ boardPage }) => {
+    await boardPage.openWithState(createBoardState());
+
+    await boardPage.attemptAddCardWithoutTitle('To Do');
+
+    await boardPage.expectCardComposerVisible('To Do');
+    await boardPage.expectVisibleCardCount(0);
+  });
+
   test('shows blocked card state and reason on the board', async ({ boardPage }) => {
     await boardPage.openWithState(
       createBoardState({
@@ -70,6 +79,23 @@ test.describe('Card positive paths', () => {
 
     await boardPage.expectCardVisible('Blocked visible card');
     await boardPage.expectCardTextVisible('Blocked visible card', 'Blocked: Waiting for approval');
+  });
+
+  test('shows priority and due date on the card', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [
+          createCard(1, {
+            title: 'Card visual fields',
+            priority: 'high',
+            dueDate: '2026-06-30',
+          }),
+        ],
+      }),
+    );
+
+    await boardPage.expectCardTextVisible('Card visual fields', 'High');
+    await boardPage.expectCardTextMatches('Card visual fields', /2026-06-30/);
   });
 
   test('deletes a card after confirmation', async ({ boardPage }) => {

@@ -109,6 +109,18 @@ export const createColumn = (
   ...overrides,
 });
 
+export const createSwimlane = (
+  id: string,
+  title: string,
+  order: number,
+  overrides: Partial<KanbanSwimlane> = {},
+): KanbanSwimlane => ({
+  id,
+  title,
+  order,
+  ...overrides,
+});
+
 export const createBoardState = (
   overrides: Partial<KanbanBoard> = {},
   storeOverrides: Partial<KanbanStore['state']> = {},

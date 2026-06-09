@@ -10,8 +10,6 @@ Default URL:
 https://main-bvxea6i-yqgjk4adqrx5w.ch-1.platformsh.site/
 ```
 
-The URL can be overridden with `BASE_URL`.
-
 ## Setup
 
 ```bash
@@ -48,18 +46,7 @@ npm run test:performance
 Negative and performance tests document known defects from `docs/BUG_REPORT.md`. They are expected to fail while the
 demo application does not match the requirements. Use `npm run test:positive` for a green smoke run.
 
-Run against a different environment:
-
-```bash
-BASE_URL=https://example.com npm test
-```
-
-PowerShell:
-
-```powershell
-$env:BASE_URL = "https://example.com"
-npm test
-```
+The default Kanban Board URL is configured in `playwright.config.ts`.
 
 ## Project Structure
 

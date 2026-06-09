@@ -105,6 +105,38 @@ test.describe('Search and filters positive paths', () => {
     await boardPage.expectCardVisible('Low priority restored card');
   });
 
+  test('combines priority and blocked filters', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [
+          createCard(1, {
+            title: 'High blocked combined card',
+            priority: 'high',
+            blocked: true,
+            blockedReason: 'Waiting for dependency',
+          }),
+          createCard(2, {
+            title: 'High unblocked combined card',
+            priority: 'high',
+          }),
+          createCard(3, {
+            title: 'Low blocked combined card',
+            priority: 'low',
+            blocked: true,
+            blockedReason: 'Waiting for dependency',
+          }),
+        ],
+      }),
+    );
+
+    await boardPage.selectPriorityFilter('High');
+    await boardPage.selectBlockedFilter();
+
+    await boardPage.expectCardVisible('High blocked combined card');
+    await boardPage.expectCardHidden('High unblocked combined card');
+    await boardPage.expectCardHidden('Low blocked combined card');
+  });
+
   test('filters cards by due date range', async ({ boardPage }) => {
     await boardPage.openWithState(
       createBoardState({
