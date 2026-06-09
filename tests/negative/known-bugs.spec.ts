@@ -2,6 +2,12 @@ import { test, expect } from '../../fixtures/board.fixture';
 import { DEFAULT_SWIMLANE_ID, createBoardState, createCard } from '../../utils/board-state';
 
 test.describe('Known bugs', () => {
+  test('BUG-001: uses In progress as the default middle column', async ({ boardPage }) => {
+    await boardPage.openWithState(createBoardState());
+
+    await boardPage.expectColumnVisible('In progress');
+  });
+
   test('BUG-003: creates a column using the add-column button', async ({ boardPage }) => {
     await boardPage.openWithState(createBoardState());
 

@@ -92,6 +92,23 @@ export const createCard = (number: number, overrides: Partial<KanbanCard> = {}):
   ...overrides,
 });
 
+export const createColumn = (
+  id: string,
+  title: string,
+  order: number,
+  overrides: Partial<KanbanColumn> = {},
+): KanbanColumn => ({
+  id,
+  title,
+  description: '',
+  policy: '',
+  wipLimit: null,
+  wipHardBlock: false,
+  order,
+  archived: false,
+  ...overrides,
+});
+
 export const createBoardState = (
   overrides: Partial<KanbanBoard> = {},
   storeOverrides: Partial<KanbanStore['state']> = {},
@@ -105,36 +122,9 @@ export const createBoardState = (
           id: 'board-1',
           name: 'My Board',
           columns: [
-            {
-              id: COLUMN_IDS.todo,
-              title: 'To Do',
-              description: '',
-              policy: '',
-              wipLimit: null,
-              wipHardBlock: false,
-              order: 0,
-              archived: false,
-            },
-            {
-              id: COLUMN_IDS.doing,
-              title: 'Doing',
-              description: '',
-              policy: '',
-              wipLimit: null,
-              wipHardBlock: false,
-              order: 1,
-              archived: false,
-            },
-            {
-              id: COLUMN_IDS.done,
-              title: 'Done',
-              description: '',
-              policy: '',
-              wipLimit: null,
-              wipHardBlock: false,
-              order: 2,
-              archived: false,
-            },
+            createColumn(COLUMN_IDS.todo, 'To Do', 0),
+            createColumn(COLUMN_IDS.doing, 'Doing', 1),
+            createColumn(COLUMN_IDS.done, 'Done', 2),
           ],
           cards,
           swimlanes: [{ id: DEFAULT_SWIMLANE_ID, title: 'Default', order: 0 }],
