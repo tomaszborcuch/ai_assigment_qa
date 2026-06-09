@@ -33,6 +33,10 @@ export class BoardPage extends BasePage {
     await expect(this.cardContainerByTitle(title)).toBeHidden(options);
   }
 
+  async expectCardTextVisible(title: string, text: string): Promise<void> {
+    await expect(this.cardContainerByTitle(title).getByText(text, { exact: true })).toBeVisible();
+  }
+
   async expectVisibleCardCount(count: number, options?: { timeout?: number }): Promise<void> {
     await expect(this.cardContainers().filter({ visible: true })).toHaveCount(count, options);
   }
@@ -79,6 +83,11 @@ export class BoardPage extends BasePage {
   async selectBlockedFilter(): Promise<void> {
     await this.openFilters();
     await this.page.getByRole('button', { name: /^(app\.filters\.blocked_only\.label|Blocked only)$/ }).click();
+  }
+
+  async selectNotBlockedFilter(): Promise<void> {
+    await this.openFilters();
+    await this.page.getByRole('button', { name: 'Not blocked' }).click();
   }
 
   async setDueDateRange(from: string, to: string): Promise<void> {

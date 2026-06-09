@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/board.fixture';
-import { COLUMN_IDS, createBoardState, createCard, createColumn } from '../../utils/board-state';
+import { COLUMN_IDS, DEFAULT_SWIMLANE_ID, createBoardState, createCard, createColumn } from '../../utils/board-state';
 
 test.describe('Board positive paths', () => {
   test('loads the board and visible columns', async ({ boardPage }) => {
@@ -88,5 +88,31 @@ test.describe('Board positive paths', () => {
       (card) => card.title === 'Move selected card',
     );
     expect(movedCard).toEqual(expect.objectContaining({ columnId: COLUMN_IDS.doing }));
+  });
+
+  test('keeps card number stable after moving a card', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [createCard(7, { title: 'Stable number card' })],
+        nextCardNumber: 8,
+      }),
+    );
+
+    await boardPage.selectCard('Stable number card');
+    await boardPage.bulkMoveSelectedCardsTo('Done');
+
+    const movedCard = (await boardPage.getStoredState()).state.boards[0].cards[0];
+    expect(movedCard).toEqual(expect.objectContaining({ number: 7, columnId: COLUMN_IDS.done }));
+  });
+
+  test('shows cards assigned to the default swimlane', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        swimlanesEnabled: true,
+        cards: [createCard(1, { title: 'Default swimlane card', swimlaneId: DEFAULT_SWIMLANE_ID })],
+      }),
+    );
+
+    await boardPage.expectCardVisible('Default swimlane card');
   });
 });

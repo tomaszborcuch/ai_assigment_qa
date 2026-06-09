@@ -46,6 +46,20 @@ export class CardModalComponent {
     await expect(this.modal).toBeHidden();
   }
 
+  async deleteAndConfirm(): Promise<void> {
+    const dialogPromise = new Promise<void>((resolve) => {
+      this.page.once('dialog', async (dialog) => {
+        expect(dialog.message()).toMatch(/^Delete card #\d+\?$/);
+        await dialog.accept();
+        resolve();
+      });
+    });
+
+    await this.modal.getByRole('button', { name: 'Delete' }).click();
+    await dialogPromise;
+    await expect(this.modal).toBeHidden();
+  }
+
   async closeWithEscape(): Promise<void> {
     await this.page.keyboard.press('Escape');
     await expect(this.modal).toBeHidden();

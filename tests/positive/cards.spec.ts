@@ -54,4 +54,37 @@ test.describe('Card positive paths', () => {
     await boardPage.expectCardVisible('Cancel edit card');
     await boardPage.expectCardHidden('Unsaved title');
   });
+
+  test('shows blocked card state and reason on the board', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [
+          createCard(1, {
+            title: 'Blocked visible card',
+            blocked: true,
+            blockedReason: 'Waiting for approval',
+          }),
+        ],
+      }),
+    );
+
+    await boardPage.expectCardVisible('Blocked visible card');
+    await boardPage.expectCardTextVisible('Blocked visible card', 'Blocked: Waiting for approval');
+  });
+
+  test('deletes a card after confirmation', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [createCard(1, { title: 'Delete positive card' })],
+      }),
+    );
+
+    await boardPage.openCard('Delete positive card');
+    await boardPage.cardModal.deleteAndConfirm();
+
+    await boardPage.expectCardHidden('Delete positive card');
+
+    const cards = (await boardPage.getStoredState()).state.boards[0].cards;
+    expect(cards).toHaveLength(0);
+  });
 });

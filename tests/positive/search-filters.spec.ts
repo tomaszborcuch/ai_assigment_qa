@@ -67,6 +67,44 @@ test.describe('Search and filters positive paths', () => {
     await boardPage.expectCardHidden('Unblocked filter card');
   });
 
+  test('filters not blocked cards', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [
+          createCard(1, {
+            title: 'Blocked card hidden by not blocked filter',
+            blocked: true,
+            blockedReason: 'Waiting for dependency',
+          }),
+          createCard(2, { title: 'Visible not blocked card' }),
+        ],
+      }),
+    );
+
+    await boardPage.selectNotBlockedFilter();
+
+    await boardPage.expectCardVisible('Visible not blocked card');
+    await boardPage.expectCardHidden('Blocked card hidden by not blocked filter');
+  });
+
+  test('clears active non-search filters', async ({ boardPage }) => {
+    await boardPage.openWithState(
+      createBoardState({
+        cards: [
+          createCard(1, { title: 'High priority clear filter card', priority: 'high' }),
+          createCard(2, { title: 'Low priority restored card', priority: 'low' }),
+        ],
+      }),
+    );
+
+    await boardPage.selectPriorityFilter('High');
+    await boardPage.expectCardHidden('Low priority restored card');
+    await boardPage.clearAllFilters();
+
+    await boardPage.expectCardVisible('High priority clear filter card');
+    await boardPage.expectCardVisible('Low priority restored card');
+  });
+
   test('filters cards by due date range', async ({ boardPage }) => {
     await boardPage.openWithState(
       createBoardState({
